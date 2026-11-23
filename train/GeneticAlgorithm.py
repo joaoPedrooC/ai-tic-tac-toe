@@ -21,10 +21,10 @@ def std(model: NN) -> NN:
     if not hasattr(layer, "weights"):
       continue
     mean = layer.weights.mean(dim=1, keepdim=True)
-    new_w = (layer.weights - mean) ** 2
-    new_w = layer.weights + torch.sqrt(new_w / new_w.shape[1])
+    noise = (layer.weights - mean) ** 2
+    noise = torch.randn_like(layer.weights) * torch.sqrt(noise / noise.shape[1])
 
-    model.layers[layer_idx].weights = new_w
+    model.layers[layer_idx].weights = layer.weights + noise
   return model
 
 def rnd(model: NN) -> NN:

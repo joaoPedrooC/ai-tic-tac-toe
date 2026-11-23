@@ -1,3 +1,13 @@
+import torch
+
+EMPTY_CELL = 0
+X = 1
+O = -1
+
+WIN_CONDITIONS = [
+    (0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)
+]
+
 def show_board(board):
     symbols = {
         1: " X ",
@@ -13,6 +23,12 @@ def show_board(board):
 
         if i < 2:
             print("-" * 11)
+
+def check_winner(game_board: list[int]) -> str | None:
+  for a, b, c in WIN_CONDITIONS:
+    if game_board[a] != EMPTY_CELL and (game_board[a] == game_board[b] == game_board[c]):
+      return game_board[a]
+  return None
 
 def play(model):
     board = [0] * 9
